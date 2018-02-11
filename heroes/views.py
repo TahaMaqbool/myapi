@@ -38,3 +38,12 @@ def hero_detail(request, pk):
     if request.method == 'GET':
         serializer = HeroSerializer(hero)
         return JsonResponse(serializer.data)
+
+    if request.method == 'PUT':
+        data = JSONParser().parse(request)
+        serializer = HeroSerializer(hero, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=200)
+        return JsonResponse(serializer.errors, status=400)
+
